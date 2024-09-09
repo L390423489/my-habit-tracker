@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Home, BookOpen, Settings, Calendar, Edit, Trash, Repeat, ChevronLeft, ChevronRight, PlusCircle, Target, Tag } from 'lucide-react';
 import './index.css';
 
-
-
 // Modal Component
 const Modal = ({ title, children, onClose }) => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -59,7 +57,7 @@ const HomePage = ({ tasks, setTasks, streak, setStreak, goals, setGoals }) => {
         setStreak(0);
       }
     }
-  }, [goals,setStreak]);
+  }, [goals, setStreak]);
 
   const toggleTaskCompletion = (taskId) => {
     setTasks(prevTasks => {
@@ -119,33 +117,33 @@ const HomePage = ({ tasks, setTasks, streak, setStreak, goals, setGoals }) => {
 
   // Handle Recurrence for Daily, Weekly, or Monthly
   const handleSetRecurringTask = (task, recurrenceType) => {
-    const updatedTasks = [...tasks]; 
+    const updatedTasks = [...tasks];
     const originalDate = new Date(task.date);
 
-    for (let i = 1; i <= 30; i++) { // Adjust this number as needed
+    for (let i = 1; i <= 30; i++) {
       const newDate = new Date(originalDate);
-      
+
       if (recurrenceType === 'daily') {
-        newDate.setDate(originalDate.getDate() + i); // Daily recurrence
+        newDate.setDate(originalDate.getDate() + i);
       } else if (recurrenceType === 'weekly') {
-        newDate.setDate(originalDate.getDate() + i * 7); // Weekly recurrence
+        newDate.setDate(originalDate.getDate() + i * 7);
       } else if (recurrenceType === 'monthly') {
-        newDate.setMonth(originalDate.getMonth() + i); // Monthly recurrence
+        newDate.setMonth(originalDate.getMonth() + i);
       }
 
       const newTask = {
         ...task,
-        id: Date.now() + i, // Generate a unique ID for each task
-        date: newDate.toDateString(), // Set the new date
-        originalTaskId: task.id, // Add original task ID for recurrence tracking
-        label: task.label // Keep label for recurring tasks
+        id: Date.now() + i,
+        date: newDate.toDateString(),
+        originalTaskId: task.id,
+        label: task.label
       };
 
-      updatedTasks.push(newTask); // Add the task to the list
+      updatedTasks.push(newTask);
     }
 
-    setTasks(updatedTasks); // Update state
-    setShowModal(false); // Close modal
+    setTasks(updatedTasks);
+    setShowModal(false);
   };
 
   // Edit task
@@ -155,8 +153,8 @@ const HomePage = ({ tasks, setTasks, streak, setStreak, goals, setGoals }) => {
 
   // Delete Task and Recurring Instances
   const handleDeleteTask = (taskId) => {
-    setTasks(prevTasks => prevTasks.filter(task => 
-      task.id !== taskId && task.originalTaskId !== taskId // Deletes both the task and its recurring instances
+    setTasks(prevTasks => prevTasks.filter(task =>
+      task.id !== taskId && task.originalTaskId !== taskId
     ));
   };
 
@@ -184,7 +182,6 @@ const HomePage = ({ tasks, setTasks, streak, setStreak, goals, setGoals }) => {
       return today >= taskDate && today.getDate() === taskDate.getDate();
     }
 
-    // Default case for non-recurring tasks
     return today.toDateString() === taskDate.toDateString();
   };
 
@@ -198,22 +195,16 @@ const HomePage = ({ tasks, setTasks, streak, setStreak, goals, setGoals }) => {
         <div className="text-sm text-gray-600">{encouragingPhrase}</div>
         <div className="flex justify-between mt-4">
           {getWeekDates().map((date, index) => (
-            <div 
-              key={index} 
-              className="flex items-center space-x-2"
-            >
-              <div 
-                className={`w-8 h-8 flex items-center justify-center rounded-full ${
-                  date.toDateString() === currentDate.toDateString() 
-                    ? 'bg-yellow-400' 
-                    : tasks.every(task => task.completed) && date.toDateString() === currentDate.toDateString()
-                    ? 'bg-green-400'
-                    : 'bg-gray-200'
-                }`}
-              >
+            <div key={index} className="flex items-center space-x-2">
+              <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
+                date.toDateString() === currentDate.toDateString()
+                  ? 'bg-yellow-400'
+                  : tasks.every(task => task.completed) && date.toDateString() === currentDate.toDateString()
+                  ? 'bg-green-400'
+                  : 'bg-gray-200'
+              }`}>
                 {date.getDate()}
               </div>
-              {/* Only show "Plus" icon for the current day */}
               {date.toDateString() === currentDate.toDateString() && (
                 <button onClick={() => addTask(date)}>
                   <PlusCircle size={20} />
@@ -401,7 +392,6 @@ const LogView = ({ tasks, setTasks, goals }) => {
         </div>
       ))}
 
-      {/* Note Section */}
       <div className="mb-4">
         <div className="font-bold text-lg mb-2">Note</div>
         <ul>
@@ -523,17 +513,10 @@ const GoalsPage = ({ goals, setGoals, tasks }) => {
     }));
   };
 
-  const deleteGoal = (id) => {
-    setGoals(goals.filter(goal => goal.id !== id));
-  };
-
   useEffect(() => {
-    setGoals(goals.map(goal => {
-      const completedTasks = tasks.filter(task => task.label === goal.title && task.completed).length;
-      return { ...goal, progress: completedTasks };
-    }));
-  }, [tasks, goals, setGoals]); // Include `goals` and `setGoals` in the dependency array
-  
+    updateGoalProgress();
+  }, [tasks]);
+
   return (
     <div className="p-4 bg-gray-100">
       <h1 className="text-2xl font-bold mb-4">Weekly Goals</h1>
@@ -544,7 +527,7 @@ const GoalsPage = ({ goals, setGoals, tasks }) => {
               <span>{goal.title} ({goal.progress}/{goal.target})</span>
               <div className="flex space-x-2">
                 <button className="p-1"><Edit size={18} /></button>
-                <button onClick={() => deleteGoal(goal.id)} className="p-1 text-red-500"><Trash size={18} /></button>
+                <button onClick={() => setGoals(goals.filter(g => g.id !== goal.id))} className="p-1 text-red-500"><Trash size={18} /></button>
               </div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -606,4 +589,3 @@ const App = () => {
 };
 
 export default App;
-
