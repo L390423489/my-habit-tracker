@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Home, BookOpen, Settings, Calendar, Edit, Trash, Repeat, ChevronLeft, ChevronRight, PlusCircle, Target, Tag } from 'lucide-react';
+import './index.css';
+
+
 
 // Modal Component
 const Modal = ({ title, children, onClose }) => (
