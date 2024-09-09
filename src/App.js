@@ -59,7 +59,7 @@ const HomePage = ({ tasks, setTasks, streak, setStreak, goals, setGoals }) => {
         setStreak(0);
       }
     }
-  }, [goals]);
+  }, [goals,setStreak]);
 
   const toggleTaskCompletion = (taskId) => {
     setTasks(prevTasks => {
@@ -529,7 +529,7 @@ const GoalsPage = ({ goals, setGoals, tasks }) => {
 
   useEffect(() => {
     updateGoalProgress();
-  }, [tasks]);
+  }, [tasks,updateGoalProgress]);
 
   return (
     <div className="p-4 bg-gray-100">
