@@ -528,9 +528,12 @@ const GoalsPage = ({ goals, setGoals, tasks }) => {
   };
 
   useEffect(() => {
-    updateGoalProgress();
-  }, [tasks,updateGoalProgress]);
-
+    setGoals(goals.map(goal => {
+      const completedTasks = tasks.filter(task => task.label === goal.title && task.completed).length;
+      return { ...goal, progress: completedTasks };
+    }));
+  }, [tasks, goals, setGoals]); // Include `goals` and `setGoals` in the dependency array
+  
   return (
     <div className="p-4 bg-gray-100">
       <h1 className="text-2xl font-bold mb-4">Weekly Goals</h1>
