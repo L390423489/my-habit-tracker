@@ -1,3 +1,9 @@
+/* Add these lines at the top of your index.css file */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,20 +11,36 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  width: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Dark mode styles */
+@layer base {
+  body {
+    @apply bg-white text-black;
+  }
+  .dark body {
+    @apply bg-gray-900 text-white;
+  }
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+/* Ensure full page height and width */
+html, body {
+  height: 100%;
+  display: block;
+}
+
+/* Global page container */
+.page-container {
+  max-width: 400px; /* Set consistent width for the content */
+  margin: 0 auto;
+  padding: 16px;
+  min-height: 100vh; /* Ensure container spans the full height of the viewport */
+  box-sizing: border-box;
+}
+
+/* Button fill animation */
+.button-fill {
+  transition: width 0.1s linear;
 }
