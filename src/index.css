@@ -1,46 +1,123 @@
-/* Add these lines at the top of your index.css file */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global styles */
+/* Custom CSS */
+
+/* Animation for Streak Counter (Already defined in Tailwind config) */
+/* No need to add @keyframes or .animate-streak here */
+
+/* If you need to add custom styles that are not covered by Tailwind, you can include them here */
+
+/* Example: */
+
+/* General app layout and typography */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  height: 100%;
-  width: 100%;
+  @apply font-sans bg-gray-500 text-gray-900;
 }
 
-/* Dark mode styles */
-@layer base {
-  body {
-    @apply bg-white text-black;
-  }
-  .dark body {
-    @apply bg-gray-900 text-white;
-  }
-}
-
-/* Ensure full page height and width */
+/* Remove default margin and padding */
 html, body {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  display: block;
 }
 
-/* Global page container */
-.page-container {
-  max-width: 400px; /* Set consistent width for the content */
-  margin: 0 auto;
-  padding: 16px;
-  min-height: 100vh; /* Ensure container spans the full height of the viewport */
-  box-sizing: border-box;
+/* App Container */
+.App {
+  @apply flex flex-col min-h-screen;
 }
 
-/* Button fill animation */
-.button-fill {
-  transition: width 0.1s linear;
+/* Header and footer styles */
+header {
+  @apply bg-gray-800 text-white p-4;
+}
+
+footer {
+  @apply bg-gray-100 p-4 text-center;
+}
+
+/* Button styles */
+/* You can use Tailwind classes directly in your components */
+/* If you need custom styles, define them here */
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+/* Modal box */
+.modal {
+  @apply bg-white p-8 rounded-lg w-11/12 max-w-md shadow-lg;
+}
+
+.modal h3 {
+  @apply mt-0 text-xl font-bold;
+}
+
+/* Task list */
+.task-list {
+  @apply list-none p-0 m-0;
+}
+
+.task-list li {
+  @apply bg-white p-4 mb-2 rounded-lg flex justify-between items-center shadow;
+}
+
+/* Weekday selector */
+.weekday-selector {
+  @apply flex justify-around mb-4;
+}
+
+.weekday-selector div {
+  @apply w-9 h-9 flex justify-center items-center rounded-full bg-gray-200 text-gray-800 font-bold;
+}
+
+/* Completed tasks */
+.task-list li.completed {
+  @apply line-through text-gray-500 opacity-50;
+}
+
+/* Drag and drop handling */
+.dragging-over {
+  @apply bg-gray-200;
+}
+
+/* Task input and adding */
+.task-input {
+  @apply flex items-center justify-center mb-4;
+}
+
+.task-input input {
+  @apply p-2 text-base mr-2 border border-gray-300 rounded flex-grow;
+}
+
+/* Progress bar */
+.progress-bar {
+  @apply bg-gray-200 rounded-full w-full h-2 mt-2 relative;
+}
+
+.progress-bar-filled {
+  @apply bg-green-500 h-full rounded-full transition-all duration-300;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .task-list li {
+    @apply p-3 flex-col items-start;
+  }
+
+  .weekday-selector div {
+    @apply w-8 h-8 text-sm;
+  }
+}
+
+@media (max-width: 480px) {
+  .task-input input {
+    @apply text-sm;
+  }
+
+  button {
+    @apply text-sm px-2 py-1;
+  }
 }
